@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --primary-orange: #CAA285;
+    --secondary-orange: #FAF6F3;
+    --text-grey: #C4BFB6;
+    --text-green: #18211D; 
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    min-height: 100vh;
+}
+
+body {
+    font-family: 'Jost', sans-serif;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 
+    "header"
+    "main"
+    "footer";
+}
+
+button, input {
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+textarea {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: 'Jost', sans-serif;
+}
+
+header {
+    grid-area: header;
+}
+
+main {
+    grid-area: main;
+}
+
+footer {    
+    grid-area: footer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px;
+}
+
+/*--------------------------------------------------------------
+# Navigation
+--------------------------------------------------------------*/
+nav {
+    background-color: var(--primary-orange);
+    color: white;
+    padding: 10px 12px 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#logo {
+    font-weight: 800;
+}
+
+#hamburger {
+    color: white;
+}
+
+/*--------------------------------------------------------------
+# Inbox
+--------------------------------------------------------------*/
+#inbox {
+    margin: 15px 20px 10px 20px;
+}
+
+#add-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+    padding: 10px 0 10px 0;
+}
+
+#add-task:hover {
+    background-color: var(--secondary-orange);
+}
+
+/*--------------------------------------------------------------
+# Add Task
+--------------------------------------------------------------*/
+#add-task {
+    border: 2px var(--text-grey) solid;
+    border-radius: 8px;
+    padding: 20px 10px 20px 10px;
+    color: var(--text-grey);
+}
+
+#title-input {
+    font-weight: 700;
+}
+
+#add-task textarea input {
+    color: var(--text-grey);
+}
+
+#add-task textarea {
+    width: 100%;
+}
+
+#add-task input[type="date"] {
+    font-family: 'Jost', sans-serif;
+    color: var(--text-grey);
+}
+
+#details-container {
+    display: flex;
+}
+
+#submit-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 15px
+}
+
+#cancel-task, #submit-task {
+    border-radius: 60px;
+    padding: 10px 20px 10px 20px;
+    color: white;
+}
+
+#cancel-task {
+    background-color: red;
+}
+
+#submit-task {
+    background-color: var(--primary-orange);
+}
+
+#add-container.hidden {
+    position: absolute;
+    max-height: 0;
+    transition: max-height 1s ease-out;
+    opacity: 0;
+}
+
+#add-container.active {
+    max-height: 500px;
+    transition: max-height 1s ease-out, opacity 300ms ease-in-out;
+}

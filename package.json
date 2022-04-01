@@ -1,0 +1,29 @@
+{
+  "name": "friday-productivity-app",
+  "version": "1.0.0",
+  "description": "Productivity App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ernessttan/friday-productivity-app.git"
+  },
+  "author": "Ernest Tan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ernessttan/friday-productivity-app/issues"
+  },
+  "homepage": "https://github.com/ernessttan/friday-productivity-app#readme",
+  "devDependencies": {
+    "css-loader": "^6.7.1",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "dependencies": {
+    "date-fns": "^2.28.0"
+  }
+}
