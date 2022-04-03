@@ -69,7 +69,7 @@ h1, h2, h3, p {
 /*--------------------------------------------------------------
 # Navigation
 --------------------------------------------------------------*/
-nav {
+header {
     background-color: var(--primary-orange);
     color: white;
     padding: 10px 12px 10px 12px;
@@ -86,6 +86,66 @@ nav {
     color: white;
 }
 
+nav {
+    background-color: var(--secondary-orange);
+    padding: 15px;
+}
+
+nav.hidden {
+    display: none;
+}
+
+nav.active {
+    display: block;
+}
+
+.nav-link {
+    color: var(--text-green);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-weight: 600;
+}
+
+#projects {
+    margin-top: 10px;
+}
+
+#project-title {
+    background-color: white;
+    border-radius: 8px;
+    color: var(--text-grey);
+    padding: 10px 20px 10px 8px;
+    width: 95%;
+}
+
+#submit-project {
+    background-color: var(--primary-orange);
+    color: white;
+}
+
+.project-submit {
+    width: 95%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+#add-project.hidden {
+    position: absolute;
+    max-height: 0;
+    transition: max-height 1s ease-out, opacity 300ms ease;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#add-project.active {
+    max-height: 200px;
+    transition: max-height 1s ease-out, opacity 300ms ease;
+}
+
 /*--------------------------------------------------------------
 # Inbox
 --------------------------------------------------------------*/
@@ -93,7 +153,7 @@ nav {
     margin: 15px 20px 10px 20px;
 }
 
-#add-btn {
+.add-btn {
     display: flex;
     align-items: center;
     width: 100%;
@@ -140,7 +200,7 @@ nav {
     margin-top: 15px
 }
 
-#cancel-task, #submit-task {
+#cancel-task, .submit-btn {
     border-radius: 60px;
     padding: 10px 20px 10px 20px;
     color: white;

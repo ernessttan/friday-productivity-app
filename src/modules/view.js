@@ -1,13 +1,13 @@
 import { createElement } from "../domUtils";
 import { tasks, storage } from "./storage";
 
-const main = document.querySelector('main');
+const rightScreen = document.querySelector('.right');
 
 function displayInbox() {
     const inbox = createElement('div', {id: 'inbox'});
     inbox.innerHTML = `
     <h2>Inbox</h2>
-    <form class="hidden" id="add-task">
+    <form class="hidden" id="add-task" class="add-container">
         <div id="input-container">
             <input type="text" id="title-input" placeholder="Untitled">
             <textarea placeholder="Description" id="description-input"></textarea>
@@ -17,20 +17,20 @@ function displayInbox() {
         </div>
         <div id="submit-container">
             <button id="cancel-task">Cancel</button>
-            <button id="submit-task">Add Task</button>
+            <button class="submit-btn" id="submit-task">Add Task</button>
         </div>
     </form>
-    <button type="button" id="add-btn">
+    <button type="button" id="task-btn" class="add-btn">
         <i class="fa-solid fa-plus"></i>
         <p>Add Task</p>
     </button>
     <ul id="task-list"></ul>`;
-    main.append(inbox);
-    const addButton = document.querySelector('#add-btn');
+    rightScreen.append(inbox);
+    const taskButton = document.querySelector('#task-btn');
     const addTask = document.querySelector('#add-task');
     const cancelTask = document.querySelector('#cancel-task');
 
-    addButton.addEventListener('click', function() {
+    taskButton.addEventListener('click', function() {
         addTask.classList.remove('hidden');
         addTask.classList.toggle('active');
     });
@@ -42,6 +42,7 @@ function displayInbox() {
 
 function displayTasks() {
     const taskList = document.querySelector('#task-list');
+    taskList.innerHTML = '';
     tasks.forEach((task, id) => {
         const taskEntry = createElement('li', {class: 'task-entry', id: id});
         taskEntry.innerHTML = `
