@@ -58,6 +58,14 @@ footer {
     padding: 10px;
 }
 
+ul {
+    list-style-type: none;
+}
+
+h1, h2, h3, p {
+    color: var(--text-green);
+}
+
 /*--------------------------------------------------------------
 # Navigation
 --------------------------------------------------------------*/
@@ -111,11 +119,8 @@ nav {
     font-weight: 700;
 }
 
-#add-task textarea input {
+#input-container textarea input {
     color: var(--text-grey);
-}
-
-#add-task textarea {
     width: 100%;
 }
 
@@ -149,14 +154,53 @@ nav {
     background-color: var(--primary-orange);
 }
 
-#add-container.hidden {
+#add-task.hidden {
     position: absolute;
     max-height: 0;
-    transition: max-height 1s ease-out;
+    transition: max-height 1s ease-out, opacity 300ms ease;
     opacity: 0;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 
-#add-container.active {
+#add-task.active {
     max-height: 500px;
-    transition: max-height 1s ease-out, opacity 300ms ease-in-out;
+    transition: max-height 1s ease-out, opacity 300ms ease;
+}
+
+/*--------------------------------------------------------------
+# Task List
+--------------------------------------------------------------*/
+.task-entry {
+    display: flex;
+    flex-direction: column;
+    border: 1px var(--text-green) solid;
+    border-radius: 6px;
+    padding: 8px;
+    margin: 10px 0 10px 0;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.task-entry p {
+    font-size: 14px;
+}
+
+#description.hidden {
+    position: absolute;
+    max-height: 0;
+    transition: max-height 1s ease-out, opacity 300ms ease;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#description.active {
+    max-height: 200px;
+    transition: max-height 1s ease-out, opacity 300ms ease;
 }

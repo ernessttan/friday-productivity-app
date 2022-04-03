@@ -1,12 +1,14 @@
 import { createElement } from "../domUtils";
+import { tasks, storage } from "./storage";
 
 const main = document.querySelector('main');
+
 function displayInbox() {
     const inbox = createElement('div', {id: 'inbox'});
     inbox.innerHTML = `
     <h2>Inbox</h2>
-    <div class="hidden" id="add-container">
-        <div id="add-task">
+    <form class="hidden" id="add-task">
+        <div id="input-container">
             <input type="text" id="title-input" placeholder="Untitled">
             <textarea placeholder="Description" id="description-input"></textarea>
             <div id="details-container">
@@ -17,20 +19,48 @@ function displayInbox() {
             <button id="cancel-task">Cancel</button>
             <button id="submit-task">Add Task</button>
         </div>
-    </div>
+    </form>
     <button type="button" id="add-btn">
         <i class="fa-solid fa-plus"></i>
         <p>Add Task</p>
     </button>
-    <button type="button" id="test">Hello</button>`;
+    <ul id="task-list"></ul>`;
     main.append(inbox);
     const addButton = document.querySelector('#add-btn');
-    const addContainer = document.querySelector('#add-container');
-    addButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        console.log('yo');
-        addContainer.classList.toggle('active');
+    const addTask = document.querySelector('#add-task');
+    const cancelTask = document.querySelector('#cancel-task');
+
+    addButton.addEventListener('click', function() {
+        addTask.classList.remove('hidden');
+        addTask.classList.toggle('active');
+    });
+
+    cancelTask.addEventListener('click', function() {
+        addTask.classList.toggle('hidden');
     });
 }
 
-export { displayInbox }
+function displayTasks() {
+    const taskList = document.querySelector('#task-list');
+    tasks.forEach((task, id) => {
+        const taskEntry = createElement('li', {class: 'task-entry', id: id});
+        taskEntry.innerHTML = `
+        <div class="task-header">
+            <p>${task.title}</p>
+            <p>${task.dueDate}</p>
+        </div>
+        <p id="description" class="hidden">${task.description}</p>`;
+        taskList.append(taskEntry);
+
+        taskEntry.addEventListener('click', function(e) {
+            const taskDescription = e.currentTarget.querySelector('#description');
+            if(taskDescription.className === 'hidden') {
+                taskDescription.className = 'active';
+            } else if(taskDescription.className === 'active') {
+                taskDescription.className = 'hidden';
+            }
+        });
+    });
+}
+
+export { displayInbox, displayTasks }
