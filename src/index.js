@@ -1,10 +1,10 @@
 import { displayPage, displayTasks, displayProjects } from './modules/view';
-import { addNewTask } from './modules/task';
+import { addNewTask, filterTasksToday, deleteTask, editTask} from './modules/task';
 import { addNewProject } from './modules/project';
 import { tasks, projects } from './modules/storage';
 import './styles/style.css';
 
-window.addEventListener('DOMContentLoaded', (event) => {
+window.addEventListener('DOMContentLoaded', () => {
     displayPage('Inbox');
     displayTasks(tasks);
     displayProjects();
@@ -15,12 +15,34 @@ window.addEventListener('DOMContentLoaded', (event) => {
         navBar.classList.toggle('active');
     });
 
-    const addTask = document.querySelector('#submit-task');
-    addTask.addEventListener('click', (e) => {
-        // e.preventDefault();
-        addNewTask();
-        displayAllTasks();
+    const logo = document.querySelector('#logo');
+    logo.addEventListener('click', () => {
+        displayPage('Inbox');
+        displayTasks(tasks);
     });
+
+    const addTask = document.querySelector('#submit-task');
+    addTask.addEventListener('click', () => {
+        addNewTask();
+        displayTasks(tasks);
+    });
+
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach((deleteButton) => {
+        deleteButton.addEventListener('click', (e) => {
+            deleteTask(e.currentTarget.id);
+            displayTasks(tasks);
+        });
+    });
+
+    const editButtons = document.querySelectorAll('.edit-btn');
+    editButtons.forEach((editButton) => {
+        editButton.addEventListener('click', (e) => {
+            let id = e.currentTarget.id;
+            let taskEntry = e.currentTarget.closest('.task-entry');
+            editTask(taskEntry, id);
+        });
+    })
 
     const addProjectButton = document.querySelector('#project-btn');
     const addProjectForm = document.querySelector('#add-project');
@@ -47,11 +69,18 @@ window.addEventListener('DOMContentLoaded', (event) => {
     projectNavLinks.forEach(project => {
         project.addEventListener('click', (e) => {
             let projectId = e.currentTarget.id;
-            console.log(projectId);
-            console.log(projects[projectId])
+            navBar.className = 'hidden';
             displayPage(projects[projectId].title);
+            displayTasks(projects[projectId].tasks);
         })
-    })
+    });
+
+    const today = document.querySelector('#today');
+    today.addEventListener('click', () => {
+        let tasksToday = filterTasksToday();
+        displayPage('Today');
+        displayTasks(tasksToday);
+    });
 });
 
 

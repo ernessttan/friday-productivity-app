@@ -176,8 +176,7 @@ nav.active {
     font-weight: 700;
 }
 
-#input-container textarea input {
-    color: var(--text-grey);
+#title-input, #description-input {
     width: 100%;
 }
 
@@ -246,6 +245,7 @@ nav.active {
     display: flex;
     gap: 8px;
     align-items: center;
+    padding: 3px 0 3px 0;
 }
 
 #project-select {
@@ -260,7 +260,7 @@ nav.active {
     flex-direction: column;
     border: 1px var(--text-green) solid;
     border-radius: 6px;
-    padding: 11px 14px 11px 14px;
+    padding: 11px 10px 11px 14px;
     margin: 10px 0 10px 0;
     gap: 4px;
 }
@@ -268,6 +268,12 @@ nav.active {
 .task-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.header-right {
+    display: flex;
+    gap: 15px;
 }
 
 .task-title {
@@ -315,3 +321,20 @@ nav.active {
     background-color: var(--primary-orange);
     color: white;
 }
+
+#task-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.delete-btn:hover {
+    color:red;
+}
+
+.edit-btn:hover {
+    color: var(--primary-orange);
+}
+
+
+

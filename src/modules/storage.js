@@ -1,6 +1,7 @@
 export let projects;
 export let tasks;
 
+// localStorage function for projects
 export const projectStorage = (() => {
     const saveProjects = () => {
         localStorage.setItem('projects', JSON.stringify(projects));
@@ -25,6 +26,7 @@ export const projectStorage = (() => {
     }
 })();
 
+// localStorage function for all tasks
 export const taskStorage = (() => {
     
     const saveTasks = () => {

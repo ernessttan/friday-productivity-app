@@ -1,9 +1,13 @@
 import { taskStorage, tasks, projects, projectStorage } from "./storage";
+import {format} from 'date-fns';
+import { displayTasks, displayEditForm } from "./view";
 
+// Task factory function
 const Task = (title, description, dueDate, project) => {
     return {title, description, dueDate, project}
 }
 
+// Function to add new task
 export function addNewTask() {
     const title = document.querySelector('#title-input').value;
     const description = document.querySelector('#description-input').value;
@@ -11,8 +15,6 @@ export function addNewTask() {
     const project = document.querySelector('.selected').id;
 
     let newTask = Task(title, description, dueDate, project);
-    // Need to search localStorage projects for the right project id
-    // Push the task into the project
     if(project >= 0) {
         let projectToPush = projects[project].tasks
         projectToPush.push(newTask);
@@ -24,4 +26,30 @@ export function addNewTask() {
         taskStorage.saveTasks();
     }
 }
+
+// Function to delete task
+export function deleteTask(id) {
+    tasks.splice(id, 1);
+    taskStorage.saveTasks();
+}
+
+// Function to edit task
+export function editTask(task, id) {
+    let taskData = tasks[id];
+    displayEditForm(task, taskData)
+}
+
+// Function to filter today's tasks
+export function filterTasksToday() {
+    const dateToday = format(new Date(), 'yyyy-MM-dd');
+    let result = [];
+    tasks.forEach((task, id) => {
+        if(task.dueDate === dateToday) {
+            result.push(task);
+        }
+    });
+    return result;
+}
+
+
 
