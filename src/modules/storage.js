@@ -1,37 +1,66 @@
-let tasks;
+export let projects;
+export let tasks;
 
-const storage = (() => {
-    const DEFAULT_TASKS = [
-        {
-            title: 'Example Task',
-            description: 'I am an example task!'
-        }
-    ];
-    const setItems = () => {
-        // Updates localStorage data
-        localStorage.setItem('tasks', JSON.stringify(tasks));
+export const projectStorage = (() => {
+    const saveProjects = () => {
+        localStorage.setItem('projects', JSON.stringify(projects));
     };
-
-    const getItems = () => {
-        let tasks = JSON.parse(window.localStorage.getItem('tasks'));
-        return tasks
-        
-    }
-    const reload = () => {
-        if(localStorage.getItem('tasks')) {
-            // Retrives Data from localStorage
-            tasks = JSON.parse(localStorage.getItem('tasks'));
+    const getProjects = () => {
+        projects = JSON.parse(window.localStorage.getItem('projects'));
+    };
+    const reloadProjects = () => {
+        if(localStorage.getItem('projects')) {
+            projects = JSON.parse(localStorage.getItem('projects'));
         } else {
-            tasks = DEFAULT_TASKS;
+            projects = [];
         }
-    };
-    reload();
-    setItems();
+    }
+    reloadProjects();
+    saveProjects();
+
     return {
-        setItems,
-        getItems,
-        reload
+        saveProjects,
+        getProjects,
+        reloadProjects
     }
 })();
 
-export {storage, tasks}
+export const taskStorage = (() => {
+    
+    const saveTasks = () => {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    };
+    const getTasks = () => {
+        tasks = JSON.parse(window.localStorage.getItem('tasks'));
+    };
+    const reloadTasks = () => {
+        if(localStorage.getItem('tasks')) {
+            tasks = JSON.parse(localStorage.getItem('tasks'));
+        } else {
+            tasks = [];
+        }
+    }
+    reloadTasks();
+    saveTasks();
+
+    return {
+        saveTasks,
+        getTasks,
+        reloadTasks
+    }
+})();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

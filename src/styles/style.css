@@ -3,6 +3,7 @@
 :root {
     --primary-orange: #CAA285;
     --secondary-orange: #FAF6F3;
+    --blue: #0038FF;
     --text-grey: #C4BFB6;
     --text-green: #18211D; 
 }
@@ -64,6 +65,21 @@ ul {
 
 h1, h2, h3, p {
     color: var(--text-green);
+}
+
+/*--------------------------------------------------------------
+# General
+--------------------------------------------------------------*/
+.right {
+    margin: 15px 20px 10px 20px;
+}
+
+.add-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+    padding: 10px 0 10px 0;
 }
 
 /*--------------------------------------------------------------
@@ -147,25 +163,6 @@ nav.active {
 }
 
 /*--------------------------------------------------------------
-# Inbox
---------------------------------------------------------------*/
-#inbox {
-    margin: 15px 20px 10px 20px;
-}
-
-.add-btn {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    gap: 8px;
-    padding: 10px 0 10px 0;
-}
-
-#add-task:hover {
-    background-color: var(--secondary-orange);
-}
-
-/*--------------------------------------------------------------
 # Add Task
 --------------------------------------------------------------*/
 #add-task {
@@ -191,6 +188,7 @@ nav.active {
 
 #details-container {
     display: flex;
+    gap: 10px;
 }
 
 #submit-container {
@@ -229,6 +227,31 @@ nav.active {
     transition: max-height 1s ease-out, opacity 300ms ease;
 }
 
+.project-list {
+    display: none;
+    background-color: var(--secondary-orange);
+    padding: 10px 30px 10px 10px;
+    position: absolute;
+    z-index: 10;
+    width: inherit;
+}
+
+.project-list.active {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.project-entry {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+#project-select {
+    font-size: 14px;
+}
+
 /*--------------------------------------------------------------
 # Task List
 --------------------------------------------------------------*/
@@ -237,8 +260,9 @@ nav.active {
     flex-direction: column;
     border: 1px var(--text-green) solid;
     border-radius: 6px;
-    padding: 8px;
+    padding: 11px 14px 11px 14px;
     margin: 10px 0 10px 0;
+    gap: 4px;
 }
 
 .task-header {
@@ -246,11 +270,25 @@ nav.active {
     justify-content: space-between;
 }
 
-.task-entry p {
-    font-size: 14px;
+.task-title {
+    font-size: 15px;
+    font-weight: 600;
 }
 
-#description.hidden {
+.due-date {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    color: var(--blue);
+    font-size: 12px;
+}
+
+#description {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+#task-footer.hidden {
     position: absolute;
     max-height: 0;
     transition: max-height 1s ease-out, opacity 300ms ease;
@@ -260,7 +298,20 @@ nav.active {
     z-index: -1;
 }
 
-#description.active {
+#task-footer.active {
     max-height: 200px;
     transition: max-height 1s ease-out, opacity 300ms ease;
+}
+
+.project-tag {
+    border: 1px solid var(--primary-orange);
+    color: var(--primary-orange);
+    font-size: 8px;
+    padding: 5px 14px 5px 14px;
+    border-radius: 4px;
+}
+
+.project-tag:hover {
+    background-color: var(--primary-orange);
+    color: white;
 }
