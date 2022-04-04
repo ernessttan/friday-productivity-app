@@ -34,9 +34,16 @@ export function deleteTask(id) {
 }
 
 // Function to edit task
-export function editTask(task, id) {
-    let taskData = tasks[id];
-    displayEditForm(task, taskData)
+export function editTask(id) {
+    const title = document.querySelector('#title-edit');
+    const description = document.querySelector('#description-edit');
+    const dueDate = document.querySelector('#date-edit');
+    const project = document.querySelector('.selected-edit');
+
+    let newTask = Task(title, description, dueDate, project);
+    console.log(newTask);
+    projects[id] = newTask;
+    taskStorage.saveTasks();
 }
 
 // Function to filter today's tasks

@@ -81,6 +81,12 @@ h1, h2, h3, p {
     gap: 8px;
     padding: 10px 0 10px 0;
 }
+/* For Project Dropdown */
+.active {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
 
 /*--------------------------------------------------------------
 # Navigation
@@ -235,11 +241,11 @@ nav.active {
     width: inherit;
 }
 
-.project-list.active {
+/* .project-list.active {
     display: flex;
     flex-direction: column;
     gap: 5px;
-}
+} */
 
 .project-entry {
     display: flex;
@@ -304,7 +310,7 @@ nav.active {
     z-index: -1;
 }
 
-#task-footer.active {
+#task-footer.show {
     max-height: 200px;
     transition: max-height 1s ease-out, opacity 300ms ease;
 }
@@ -335,6 +341,17 @@ nav.active {
 .edit-btn:hover {
     color: var(--primary-orange);
 }
+
+.edit-list {
+    display: none;
+    background-color: var(--secondary-orange);
+    padding: 10px 30px 10px 10px;
+    position: absolute;
+    z-index: 10;
+    width: inherit;
+}
+
+
 
 
 

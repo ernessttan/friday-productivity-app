@@ -1,7 +1,7 @@
 import { createElement } from "../domUtils";
 import { addNewProject } from "./project";
 import { projects, tasks } from "./storage";
-import { deleteTask } from "./task";
+import { deleteTask, editTask } from "./task";
 
 const rightScreen = document.querySelector('.right');
 
@@ -44,41 +44,18 @@ export function displayPage(page) {
         let projectOption = createElement('div', {class: 'project', text: project.title, id: id});
         projectList.append(projectOption);
     });
-
-  
-
-    const cancelTask = document.querySelector('#cancel-task');
-    cancelTask.addEventListener('click', function() {
-        addTask.classList.toggle('hidden');
-    });
-    
-    projectSelect.addEventListener('click', () => {
-        const projectList = document.querySelector('.project-list');
-        projectList.classList.toggle('active');
-    });
-
-    const projectOptions = document.querySelectorAll('.project');
-    projectOptions.forEach(project => {
-        project.addEventListener('click', function(e) {
-            const selected = document.querySelector('.selected');
-            let title = e.target.textContent;
-            let id = e.target.id;
-            selected.textContent = title;
-            selected.id = id;
-        });
-    });
 }
 
 // Function to show all projects in Nav Bar
 export function displayProjects() {
-    const projectList = document.querySelector('#projects-list');
-    projectList.innerHTML = '';
+    const editList = document.querySelector('#projects-list');
+ editList.innerHTML = '';
     projects.forEach((project, id) => {
         const projectEntry = createElement('li', {class: 'project-entry', id: id});
         projectEntry.innerHTML = `
         <i class="fa-solid fa-folder"></i>
         <p>${project.title}</p>`;
-        projectList.append(projectEntry);
+     editList.append(projectEntry);
     });
 }
 
@@ -119,32 +96,45 @@ export function displayTasks(taskData) {
     });
 }
 
-export function displayEditForm(task, taskData) {
-    const taskList = document.querySelector('#task-list')
-    const editForm = createElement('form', {class: 'active', id: 'add-task'});
-    console.log(taskData.description)
+export function displayEditForm(task, id) {
+    let taskData = tasks[id];
+    const taskList = document.querySelector('#task-list');
+    const editForm = createElement('form', {id: 'edit-task'});
     editForm.innerHTML = `
     <div id="input-container">
-            <input type="text" placeholder="Untitled" id="title-input" value="${taskData.title}">
-            <textarea placeholder="Description" id="description-input">${taskData.description}</textarea>
-            <div id="details-container">
-                <input type="date" id="date-input" value="${taskData.dueDate}">
-                <div id="project-select">
-                    <div class="selected">Select Project</div>
-                </div>
-            </div>  
-    </div>
+        <input type="text" id="title-edit" placeholder="Untitled">
+        <textarea placeholder="Description" id="description-edit"></textarea>
+        <div id="details-container">
+            <input type="date" id="date-edit">
+            <div id="project-edit">
+                <div class="selected-edit">Select Project</div>
+            </div>
+        </div>  
+    </div>  
     <div id="submit-container">
         <button id="cancel-task">Cancel</button>
-        <button class="submit-btn" id="submit-task">Add Task</button>
+        <button class="submit-btn" id="submit-edit">Save</button>
     </div>`;
+
     taskList.insertBefore(editForm, task);
 
-    // const projectSelect = document.querySelector('#project-select');
-    // projectSelect.addEventListener('click', () => {
-    //     console.log('Click');
-    //     const projectList = document.querySelector('.project-list');
-    //     projectList.classList.toggle('active');
-    // });
+    const saveEdit = document.querySelector('#submit-edit');
+    saveEdit.addEventListener('click', (e) => {
+        let id = e.target.closest('.task-entry');
+        console.log(id);
+        editTask(id);
+    });
+
+    const editList = createElement('div', {class: 'edit-list'});
+    const projectSelect = document.querySelector('#project-edit');
+    projectSelect.append(editList);
+    projects.forEach((project, id) => {
+        let projectOption = createElement('div', {class: 'project', text: project.title, id: id});
+        editList.append(projectOption);
+    });
+
+    projectSelect.addEventListener('click', (e) => {
+        const editList = document.querySelector('.edit-list');
+        editList.classList.toggle('active');
+    });
 }
-   
