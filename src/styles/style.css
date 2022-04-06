@@ -4,6 +4,7 @@
     --primary-orange: #CAA285;
     --secondary-orange: #FAF6F3;
     --blue: #0038FF;
+    --red: #AE0303;
     --text-grey: #C4BFB6;
     --text-green: #18211D; 
 }
@@ -67,6 +68,19 @@ h1, h2, h3, p {
     color: var(--text-green);
 }
 
+p {
+    font-size: 13px;
+}
+
+input[type="date"]:not(:valid)::-webkit-datetime-edit {
+    color: var(--text-grey);
+}
+
+input[type="date"] {
+    font-family: 'Jost', sans-serif;
+    color: black;
+}
+
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
@@ -80,6 +94,10 @@ h1, h2, h3, p {
     width: 100%;
     gap: 8px;
     padding: 10px 0 10px 0;
+}
+
+.add-btn:hover {
+    background-color: var(--secondary-orange);
 }
 
 /*--------------------------------------------------------------
@@ -105,14 +123,15 @@ header {
 nav {
     background-color: var(--secondary-orange);
     padding: 15px;
-}
-
-nav.hidden {
     display: none;
 }
 
 nav.active {
     display: block;
+}
+
+#nav-links {
+    margin-bottom: 10px;
 }
 
 .nav-link {
@@ -123,7 +142,7 @@ nav.active {
     font-weight: 600;
 }
 
-#projects {
+#nav-projects {
     margin-top: 10px;
 }
 
@@ -133,6 +152,10 @@ nav.active {
     color: var(--text-grey);
     padding: 10px 20px 10px 8px;
     width: 95%;
+}
+
+#project-title:hover {
+    box-shadow: 1px 1px 8px 1px; 
 }
 
 #submit-project {
@@ -162,6 +185,13 @@ nav.active {
     transition: max-height 1s ease-out, opacity 300ms ease;
 }
 
+#add-project > .submit-wrapper {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    width: 95%;
+}
+
 /*--------------------------------------------------------------
 # Add Task
 --------------------------------------------------------------*/
@@ -170,6 +200,11 @@ nav.active {
     border-radius: 8px;
     padding: 20px 10px 20px 10px;
     color: var(--text-grey);
+    display: none;
+}
+
+#add-task.show {
+    display: block;
 }
 
 #title-input {
@@ -180,65 +215,51 @@ nav.active {
     width: 100%;
 }
 
-#add-task input[type="date"] {
-    font-family: 'Jost', sans-serif;
-    color: var(--text-grey);
-}
-
-#details-container {
+.form-body {
     display: flex;
     gap: 10px;
 }
 
-#submit-container {
+#project-list {
+    display: none;
+    background-color: var(--secondary-orange);
+    padding: 10px 50px 10px 10px;
+    width: inherit;
+    border-radius: 8px;
+    box-shadow: 1px 1px 8px 1px 
+}
+
+#project-list.active {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 10;
+    position: absolute;
+}
+
+#project-list div {
+    color: black;
+}
+
+.form-footer {
     display: flex;
     justify-content: flex-end;
     gap: 15px;
     margin-top: 15px
 }
 
-#cancel-task, .submit-btn {
+#close-form, .submit-btn {
     border-radius: 60px;
     padding: 10px 20px 10px 20px;
     color: white;
 }
 
-#cancel-task {
+#close-form {
     background-color: red;
 }
 
 #submit-task {
     background-color: var(--primary-orange);
-}
-
-#add-task.hidden {
-    position: absolute;
-    max-height: 0;
-    transition: max-height 1s ease-out, opacity 300ms ease;
-    opacity: 0;
-    top: 0;
-    left: 0;
-    z-index: -1;
-}
-
-#add-task.active {
-    max-height: 500px;
-    transition: max-height 1s ease-out, opacity 300ms ease;
-}
-
-.project-list {
-    display: none;
-    background-color: var(--secondary-orange);
-    padding: 10px 30px 10px 10px;
-    position: absolute;
-    z-index: 10;
-    width: inherit;
-}
-
-.project-list.active {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
 }
 
 .project-entry {
@@ -265,7 +286,7 @@ nav.active {
     gap: 4px;
 }
 
-.task-header {
+.task-header, .task-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -276,11 +297,54 @@ nav.active {
     gap: 15px;
 }
 
-.task-title {
-    font-size: 15px;
-    font-weight: 600;
+.due-date {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    color: var(--blue);
+    font-size: 12px;
 }
 
+.task-content.hidden {
+    position: absolute;
+    max-height: 0;
+    transition: max-height 1s ease-out, opacity 300ms ease;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.task-content.show {
+    max-height: 200px;
+    transition: max-height 1s ease-out, opacity 300ms ease;
+}
+
+.task-footer {
+    margin-top: 10px;
+}
+
+.project-tag {
+    border: 1px solid var(--primary-orange);
+    color: var(--primary-orange);
+    font-size: 10px;
+    padding: 5px 14px 5px 14px;
+    border-radius: 4px;
+}
+
+.project-tag:hover {
+    background-color: var(--primary-orange);
+    color: white;
+}
+
+.delete-btn:hover {
+    color: green;
+}
+
+
+
+
+/*
 .due-date {
     display: flex;
     gap: 5px;
@@ -304,7 +368,7 @@ nav.active {
     z-index: -1;
 }
 
-#task-footer.active {
+#task-footer.show {
     max-height: 200px;
     transition: max-height 1s ease-out, opacity 300ms ease;
 }
@@ -335,6 +399,17 @@ nav.active {
 .edit-btn:hover {
     color: var(--primary-orange);
 }
+
+.edit-list {
+    display: none;
+    background-color: var(--secondary-orange);
+    padding: 10px 30px 10px 10px;
+    position: absolute;
+    z-index: 10;
+    width: inherit;
+} */
+
+
 
 
 

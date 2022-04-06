@@ -1,6 +1,8 @@
 import { taskStorage, tasks, projects, projectStorage } from "./storage";
 import {format} from 'date-fns';
-import { displayTasks, displayEditForm } from "./view";
+import { querySelector } from "../domUtils";
+import { displayPageTasks, displayEditForm } from "./view";
+import { assignProject } from "./project";
 
 // Task factory function
 const Task = (title, description, dueDate, project) => {
@@ -9,15 +11,14 @@ const Task = (title, description, dueDate, project) => {
 
 // Function to add new task
 export function addNewTask() {
-    const title = document.querySelector('#title-input').value;
-    const description = document.querySelector('#description-input').value;
-    const dueDate = document.querySelector('#date-input').value;
-    const project = document.querySelector('.selected').id;
+    const title = querySelector('#title-input').value;
+    const description = querySelector('#description-input').value;
+    const dueDate = querySelector('#date-input').value;
+    const project = querySelector('.selected').textContent;
 
     let newTask = Task(title, description, dueDate, project);
-    if(project >= 0) {
-        let projectToPush = projects[project].tasks
-        projectToPush.push(newTask);
+    if(project) {
+        assignProject(newTask);
         projectStorage.saveProjects();
         tasks.push(newTask);
         taskStorage.saveTasks();
@@ -34,14 +35,20 @@ export function deleteTask(id) {
 }
 
 // Function to edit task
-export function editTask(task, id) {
-    let taskData = tasks[id];
-    displayEditForm(task, taskData)
+export function editTask(id) {
+    const title = document.querySelector('#title-edit');
+    const description = document.querySelector('#description-edit');
+    const dueDate = document.querySelector('#date-edit');
+    const project = document.querySelector('.selected-edit');
+
+    let newTask = Task(title, description, dueDate, project);
+    projects[id] = newTask;
+    taskStorage.saveTasks();
 }
 
 // Function to filter today's tasks
 export function filterTasksToday() {
-    const dateToday = format(new Date(), 'yyyy-MM-dd');
+    const dateToday = format(new Date(), 'yyyy-mm-dd');
     let result = [];
     tasks.forEach((task, id) => {
         if(task.dueDate === dateToday) {
@@ -49,6 +56,15 @@ export function filterTasksToday() {
         }
     });
     return result;
+}
+
+// Function to filter project tasks
+export function filterProjectTasks(projectArr, projectTitle) {
+    projectArr.forEach((project) => {
+        if(project.title === projectTitle) {
+            displayPageTasks(project.tasks);
+        }
+    })
 }
 
 
