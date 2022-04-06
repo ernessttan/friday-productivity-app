@@ -14,4 +14,13 @@ export function addNewProject() {
     projectStorage.saveProjects();
 }
 
+// Function to assign task to a project
+export function assignProject(task) {
+    projects.forEach(project => {
+        if(task.project === project.title) {
+            project.tasks.push(task);
+        }
+    });
+}
+
 
