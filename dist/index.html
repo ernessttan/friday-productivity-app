@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friday Productivity App</title>
+
+    <script src="https://kit.fontawesome.com/0f61eb6948.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div id="logo">Friday</div>
+        <button id="hamburger">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </header>
+    <main>
+        <nav class="left">
+            <ul id="nav-links">
+                <li class="nav-link" id="today"><i class="fa-solid fa-calendar"></i>Today</li>
+            </ul>
+            <div id="nav-projects">
+                <h2>Projects</h2>
+                <button type="button" class="add-btn" id="open-project-add">
+                    <i class="fa-solid fa-plus"></i>
+                    <p>Add Project</p>
+                </button>
+                <form class='hidden' id="add-project">
+                    <input type="text" id="project-title" placeholder="Enter Project Title">
+                    <div class="submit-wrapper">
+                        <button id="submit-project" class="submit-btn">Add Project</button>
+                    </div>
+                </form>
+                <ul id="projects-list"></ul>
+            </div>
+        </nav>
+        <div class="right">
+        </div>
+    </main>
+    <footer>
+        <i class="fa-brands fa-github"></i>
+        <p>ernessttan</p>
+    </footer>
+    <script src="./main.js"></script>
+</body>
+</html>
