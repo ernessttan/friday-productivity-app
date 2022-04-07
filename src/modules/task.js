@@ -3,20 +3,29 @@ import {format} from 'date-fns';
 import { querySelector } from "../domUtils";
 import { displayPageTasks, displayEditForm } from "./view";
 import { assignProject } from "./project";
+const generateUniqueId = require('generate-unique-id');
 
 // Task factory function
-const Task = (title, description, dueDate, project) => {
-    return {title, description, dueDate, project}
+const Task = (id, title, description, dueDate, project) => {
+    return {id, title, description, dueDate, project}
 }
 
 // Function to add new task
 export function addNewTask() {
+    const id = generateUniqueId({
+        length: 2,
+        useLetters: false
+    });
     const title = querySelector('#title-input').value;
     const description = querySelector('#description-input').value;
     const dueDate = querySelector('#date-input').value;
-    const project = querySelector('.selected').textContent;
+    let project = querySelector('.selected').textContent;
 
-    let newTask = Task(title, description, dueDate, project);
+    if(project === 'Select Project') {
+        project = 'No Project Selected'     
+    }
+
+    let newTask = Task(id, title, description, dueDate, project);
     if(project) {
         assignProject(newTask);
         projectStorage.saveProjects();
@@ -30,9 +39,17 @@ export function addNewTask() {
 
 // Function to delete task
 export function deleteTask(id) {
-    tasks.splice(id, 1);
+    let index = tasks.find(t => t.id === id);
+    tasks.splice(index, 1);
     taskStorage.saveTasks();
+    
+    projects.forEach((project) => {
+        let index = project.tasks.find(t => t.id === id);
+        project.tasks.splice(index, 1);
+        projectStorage.saveProjects();
+    });
 }
+
 
 // Function to edit task
 export function editTask(id) {
@@ -48,9 +65,9 @@ export function editTask(id) {
 
 // Function to filter today's tasks
 export function filterTasksToday() {
-    const dateToday = format(new Date(), 'yyyy-mm-dd');
+    const dateToday = format(new Date(), 'yyyy-MM-dd');
     let result = [];
-    tasks.forEach((task, id) => {
+    tasks.forEach((task) => {
         if(task.dueDate === dateToday) {
             result.push(task);
         }

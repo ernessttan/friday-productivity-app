@@ -1,5 +1,6 @@
 import {createElement, querySelector, querySelectorAll, checkClassName} from '../domUtils';
 import { projects, tasks } from "./storage";
+import { getProjectName } from './project';
 
 const rightScreen = querySelector('.right');
 
@@ -25,7 +26,7 @@ export function displayPage(pageName) {
     <div class="form-body">
         <input type="date" id="date-input" required>
         <div id="project-select">
-            <div class="selected">Select Project</div>
+            <div class="selected">${getProjectName(pageName)}</div>
         </div>
     </div>
     <div class="form-footer">
@@ -50,6 +51,45 @@ export function displayPage(pageName) {
     const projectDropdown = createProjectDropdown();
     const projectSelect = querySelector('#project-select');
     projectSelect.append(projectDropdown);
+
+    const openAdd = querySelector('#open-add');
+    openAdd.addEventListener('click', (e) => {
+        e.preventDefault();
+        addTaskForm.classList.toggle('show');
+    });
+   
+    const closeTaskForm = querySelector('#close-form');
+    closeTaskForm.addEventListener('click' , () => {
+        if(addTaskForm.className === 'show') {
+            addTaskForm.className = 'hide';
+        } else {
+            addTaskForm.className = 'show';
+        }
+    });
+
+    projectSelect.addEventListener('click', () => {
+        const projectList = querySelector('#project-list');
+        projectList.classList.toggle('active');
+    });
+
+    const projectItems = querySelectorAll('.project-item');
+    projectItems.forEach((projectItem) => {
+        projectItem.addEventListener('click', (e) => {
+            const selected = querySelector('.selected');
+            let title = e.target.textContent;
+            console.log(title);
+            let id = e.target.id;
+            selected.textContent = title;
+            selected.id = id;
+            selected.style.color = 'black';
+        });
+    });
+    
+    const submitTaskButton = querySelector('#submit-task');
+    submitTaskButton.addEventListener('click', () => {
+        addNewTask();
+        displayPageTasks(tasks);
+    });
 }
 
 // Helper function to generate project dropdown list
@@ -68,7 +108,6 @@ export function displayPageTasks(tasksArr) {
     const taskEntries = querySelector('#task-list');
     taskEntries.innerHTML = '';
     tasksArr.forEach((task, id) => {
-        console.log(task);
         // Create task entry
         const taskEntry = createElement('li', {class: 'task-entry', id: task.id});
         taskEntry.innerHTML = `
