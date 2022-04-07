@@ -1,6 +1,7 @@
 import {createElement, querySelector, querySelectorAll, checkClassName} from '../domUtils';
 import { projects, tasks } from "./storage";
 import { getProjectName } from './project';
+import { editTask } from './task';
 
 const rightScreen = querySelector('.right');
 
@@ -30,7 +31,7 @@ export function displayPage(pageName) {
         </div>
     </div>
     <div class="form-footer">
-        <button type="button" id="close-form">Cancel</button>
+        <button type="button" class="close-form">Cancel</button>
         <button type="submit" class="submit-btn" id="submit-task">Add Task</button>
     </div>`;
     page.append(addTaskForm);
@@ -52,23 +53,8 @@ export function displayPage(pageName) {
     const projectSelect = querySelector('#project-select');
     projectSelect.append(projectDropdown);
 
-    const openAdd = querySelector('#open-add');
-    openAdd.addEventListener('click', (e) => {
-        e.preventDefault();
-        addTaskForm.classList.toggle('show');
-    });
-   
-    const closeTaskForm = querySelector('#close-form');
-    closeTaskForm.addEventListener('click' , () => {
-        if(addTaskForm.className === 'show') {
-            addTaskForm.className = 'hide';
-        } else {
-            addTaskForm.className = 'show';
-        }
-    });
-
     projectSelect.addEventListener('click', () => {
-        const projectList = querySelector('#project-list');
+        const projectList = querySelector('.project-list');
         projectList.classList.toggle('active');
     });
 
@@ -84,17 +70,26 @@ export function displayPage(pageName) {
             selected.style.color = 'black';
         });
     });
-    
-    const submitTaskButton = querySelector('#submit-task');
-    submitTaskButton.addEventListener('click', () => {
-        addNewTask();
-        displayPageTasks(tasks);
+
+    const openAdd = querySelector('#open-add');
+    openAdd.addEventListener('click', (e) => {
+        e.preventDefault();
+        addTaskForm.classList.toggle('show');
+    });
+
+    const closeTaskForm = querySelector('.close-form', parent = addTaskForm);
+    closeTaskForm.addEventListener('click' , () => {
+        if(addTaskForm.className === 'show') {
+            addTaskForm.className = 'hide';
+        } else {
+            addTaskForm.className = 'show';
+        }
     });
 }
 
 // Helper function to generate project dropdown list
 function createProjectDropdown() {
-    const projectList = createElement('div', {id: 'project-list'});
+    const projectList = createElement('div', {class: 'project-list'});
     projects.forEach((project, id) => {
         let projectOption = createElement('div', {class:'project-item', text: project.title, id: id});
         projectList.append(projectOption);
@@ -107,7 +102,7 @@ function createProjectDropdown() {
 export function displayPageTasks(tasksArr) {
     const taskEntries = querySelector('#task-list');
     taskEntries.innerHTML = '';
-    tasksArr.forEach((task, id) => {
+    tasksArr.forEach((task) => {
         // Create task entry
         const taskEntry = createElement('li', {class: 'task-entry', id: task.id});
         taskEntry.innerHTML = `
@@ -132,12 +127,6 @@ export function displayPageTasks(tasksArr) {
             const taskContent = e.currentTarget.querySelector('.task-content');
             checkClassName(taskContent, 'show', 'hidden');
         });
-        // taskList.forEach((taskEntry) => {
-        //     taskEntry.addEventListener('click', (e) => {
-        //         const taskContent = e.currentTarget.querySelector('.task-content');
-        //         checkClassName(taskContent, 'show', 'hidden');
-        //     });
-        // });
     });
 }
 
@@ -152,4 +141,56 @@ export function displayProjects(projectsArr) {
         projectEntry.innerHTML = `<i class="fa-solid fa-folder"></i>${project.title}`;
         projectList.append(projectEntry);
     })
+}
+
+// Function to display Edit Form
+export function displayEditForm(id, selector) {
+    const editForm = createElement('form', {id: 'edit-task'});
+    let taskToEdit = tasks.find(t => t.id === id);
+    editForm.innerHTML = `
+    <div class="form-header">
+        <input type="text" id="title-edit" placeholder="Untitled" value=${taskToEdit.title}required>
+        <textarea id="description-edit" placeholder="Description" value=${taskToEdit.description}></textarea>
+    </div>
+    <div class="form-body">
+        <input type="date" id="date-edit" value=${taskToEdit.dueDate}required>
+        <div id="project-edit">
+            <div class="selected">${getProjectName(taskToEdit.project)}</div>
+        </div>
+    </div>
+    <div class="form-footer">
+        <button type="button" class="close-form">Cancel Edit</button>
+        <button type="submit" class="submit-btn submit-edit" id="${id}">Edit Task</button>
+    </div>`;
+    querySelector('#task-list').insertBefore(editForm, selector);
+
+    // Create add project dropdown
+    const projectDropdown = createProjectDropdown();
+    const projectSelect = querySelector('#project-edit');
+    projectSelect.append(projectDropdown);
+
+    projectSelect.addEventListener('click', () => {
+        const projectList = querySelector('.project-list', parent = projectSelect);
+        console.log(projectList);
+        projectList.classList.toggle('active');
+    });
+
+    const projectItems = querySelectorAll('.project-item');
+    projectItems.forEach((projectItem) => {
+        projectItem.addEventListener('click', (e) => {
+            const selected = querySelector('.selected');
+            let title = e.target.textContent;
+            console.log(title);
+            let id = e.target.id;
+            selected.textContent = title;
+            selected.id = id;
+            selected.style.color = 'black';
+        });
+    });
+
+    const editTaskForm = querySelector('#edit-task');
+    const closeTaskForm = querySelector('.close-form', parent = editTaskForm);
+    closeTaskForm.addEventListener('click' , () => {
+        editTaskForm.remove();
+    });
 }

@@ -32,6 +32,8 @@ export function getProjectName(pageName) {
     projects.forEach((project) => {
         if(project.title === pageName) {
             prefill = pageName
+        } else {
+            prefill = 'Select Project';
         }
     });
     return prefill

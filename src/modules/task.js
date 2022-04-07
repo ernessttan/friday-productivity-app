@@ -53,13 +53,13 @@ export function deleteTask(id) {
 
 // Function to edit task
 export function editTask(id) {
-    const title = document.querySelector('#title-edit');
-    const description = document.querySelector('#description-edit');
-    const dueDate = document.querySelector('#date-edit');
-    const project = document.querySelector('.selected-edit');
-
-    let newTask = Task(title, description, dueDate, project);
-    projects[id] = newTask;
+    let taskToEdit = tasks.find(t => t.id === id);
+    
+    taskToEdit.title = document.querySelector('#title-edit').value;
+    taskToEdit.description = document.querySelector('#description-edit').value;
+    taskToEdit.dueDate = document.querySelector('#date-edit').value;
+    taskToEdit.project = document.querySelector('#selected-edit').textContent;
+    console.log(taskToEdit);
     taskStorage.saveTasks();
 }
 

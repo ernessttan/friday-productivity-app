@@ -195,11 +195,14 @@ nav.active {
 /*--------------------------------------------------------------
 # Add Task
 --------------------------------------------------------------*/
-#add-task {
+#add-task, #edit-task {
     border: 2px var(--text-grey) solid;
     border-radius: 8px;
     padding: 20px 10px 20px 10px;
     color: var(--text-grey);
+}
+
+#add-task {
     display: none;
 }
 
@@ -207,11 +210,15 @@ nav.active {
     display: block;
 }
 
+#edit-task.hide {
+    display: none;
+}
+
 #title-input {
     font-weight: 700;
 }
 
-#title-input, #description-input {
+#title-input, #description-input, #title-edit, #description-edit {
     width: 100%;
 }
 
@@ -220,7 +227,7 @@ nav.active {
     gap: 10px;
 }
 
-#project-list {
+.project-list {
     display: none;
     background-color: var(--secondary-orange);
     padding: 10px 50px 10px 10px;
@@ -229,7 +236,7 @@ nav.active {
     box-shadow: 1px 1px 8px 1px 
 }
 
-#project-list.active {
+.project-list.active {
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -237,7 +244,7 @@ nav.active {
     position: absolute;
 }
 
-#project-list div {
+.project-list div {
     color: black;
 }
 
@@ -258,7 +265,7 @@ nav.active {
     background-color: red;
 }
 
-#submit-task {
+#submit-task, .submit-edit {
     background-color: var(--primary-orange);
 }
 

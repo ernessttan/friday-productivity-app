@@ -1,6 +1,6 @@
 import './styles/style.css';
-import { displayPage, displayPageTasks, displayProjects } from './modules/view';
-import { addGlobalEventListener, querySelector, querySelectorAll, checkClassName } from './domUtils';
+import { displayPage, displayPageTasks, displayProjects, displayEditForm } from './modules/view';
+import { querySelector, querySelectorAll, checkClassName } from './domUtils';
 import { addNewTask, deleteTask, filterProjectTasks, filterTasksToday } from './modules/task';
 import { addNewProject } from './modules/project';
 import {tasks, projects} from './modules/storage';
@@ -68,6 +68,12 @@ window.addEventListener('DOMContentLoaded', () => {
      });
 
     /* Task List Event Listeners */
+    const submitTaskButton = querySelector('#submit-task');
+    submitTaskButton.addEventListener('click', () => {
+        addNewTask();
+        displayPageTasks(tasks);
+    });
+
     const deleteTaskButtons = querySelectorAll('.delete-btn');
     deleteTaskButtons.forEach((deleteTaskButton) => {
         deleteTaskButton.addEventListener('click', (e) => {
@@ -76,7 +82,16 @@ window.addEventListener('DOMContentLoaded', () => {
             displayPageTasks(tasks);
             // location.reload();
         });
-    })
+    });
+
+    const editTaskButtons = querySelectorAll('.edit-btn');
+    editTaskButtons.forEach((editTaskButton) => {
+        editTaskButton.addEventListener('click', (e) => {
+            let selector = e.currentTarget.closest('.task-entry');
+            let id = e.currentTarget.id
+            displayEditForm(id, selector);
+        });
+    });
 
 });
 
