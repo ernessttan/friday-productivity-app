@@ -1,31 +1,26 @@
-import { taskStorage, tasks, projects, projectStorage } from "./storage";
-import {format} from 'date-fns';
-import { querySelector } from "../domUtils";
-import { displayPageTasks, displayEditForm } from "./view";
-import { assignProject } from "./project";
 const generateUniqueId = require('generate-unique-id');
+import {format} from 'date-fns';
+import { querySelector } from '../domUtils';
+import { assignProject } from './project';
+import { taskStorage, tasks, projects, projectStorage } from './storage';
+import { displayPageTasks } from './view';
 
-// Task factory function
-const Task = (id, title, description, dueDate, project) => {
-    return {id, title, description, dueDate, project}
+// Task Factory Function
+const Task = function(id, title, description, project, dueDate) {
+    return {id, title, description, project, dueDate}
 }
 
 // Function to add new task
 export function addNewTask() {
-    const id = generateUniqueId({
-        length: 2,
-        useLetters: false
-    });
-    const title = querySelector('#title-input').value;
-    const description = querySelector('#description-input').value;
-    const dueDate = querySelector('#date-input').value;
-    let project = querySelector('.selected').textContent;
-
+    const id = generateUniqueId({length: 2});
+    const title = querySelector('#taskTitle').value;
+    const description = querySelector('#taskDescription').value;
+    const dueDate = querySelector('#taskDate').value;
+    let project = querySelector('.selected', parent = querySelector('#projectSelect')).textContent;
     if(project === 'Select Project') {
-        project = 'No Project Selected'     
+        project = 'No Project Selected';
     }
-
-    let newTask = Task(id, title, description, dueDate, project);
+    let newTask = Task(id, title, description, project, dueDate);
     if(project) {
         assignProject(newTask);
         projectStorage.saveProjects();
@@ -35,36 +30,56 @@ export function addNewTask() {
         tasks.push(newTask);
         taskStorage.saveTasks();
     }
+   
 }
 
-// Function to delete task
-export function deleteTask(id) {
-    let index = tasks.find(t => t.id === id);
-    tasks.splice(index, 1);
-    taskStorage.saveTasks();
-    
-    projects.forEach((project) => {
-        let index = project.tasks.find(t => t.id === id);
-        project.tasks.splice(index, 1);
-        projectStorage.saveProjects();
+// Function to complete task
+// Input: Integer id
+export function completeTask(id, pageName) {
+    let task = tasks.find((task, index) => {
+        if(task.id === id) {
+            return {task, index}
+        }
     });
-}
-
-
-// Function to edit task
-export function editTask(id) {
-    let taskToEdit = tasks.find(t => t.id === id);
-    
-    taskToEdit.title = document.querySelector('#title-edit').value;
-    taskToEdit.description = document.querySelector('#description-edit').value;
-    taskToEdit.dueDate = document.querySelector('#date-edit').value;
-    taskToEdit.project = document.querySelector('#selected-edit').textContent;
-    console.log(taskToEdit);
+    tasks.splice(task.index, 1);
     taskStorage.saveTasks();
+    displayPageTasks(tasks, pageName);
+
+    if(task.project != '') {
+        projects.forEach((project) => {
+            let index = project.tasks.find(t => t.id === id);
+            if(index) {
+                project.tasks.splice(index, 1);
+                projectStorage.saveProjects();
+            }
+        });
+    }    
 }
 
-// Function to filter today's tasks
-export function filterTasksToday() {
+export function filterProjectTasks(pageName) {
+    let result = [];
+    projects.forEach((project) => {
+        let projectTasks = project.tasks;
+        projectTasks.forEach((task) => {
+            if(task.project === pageName) {
+                result.push(task);
+            }
+        })
+    });
+    return result
+}
+
+// Function to filter Nav tasks
+// Input: String pagename
+export function filterTasks(pageName) {
+    let result = [];
+    if(pageName === 'Today') {
+        result = filterTasksToday();
+    }
+    return result;
+}
+
+function filterTasksToday() {
     const dateToday = format(new Date(), 'yyyy-MM-dd');
     let result = [];
     tasks.forEach((task) => {
@@ -73,15 +88,6 @@ export function filterTasksToday() {
         }
     });
     return result;
-}
-
-// Function to filter project tasks
-export function filterProjectTasks(projectArr, projectTitle) {
-    projectArr.forEach((project) => {
-        if(project.title === projectTitle) {
-            displayPageTasks(project.tasks);
-        }
-    })
 }
 
 

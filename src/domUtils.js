@@ -47,12 +47,12 @@ export function addGlobalEventListener(
   )
 };
 
-export function checkClassName(selector, toAdd, toRemove) {
-    if(selector.classList.contains(toRemove)) {
-      selector.classList.remove(toRemove);
-      selector.classList.add(toAdd);
-    } else if(selector.classList.contains(toAdd)) {
-      selector.classList.remove(toAdd);
-      selector.classList.add(toRemove);
+export function toggleClasses(selector, currentClass, newClass) {
+  if(selector.classList.contains(currentClass)) {
+    selector.classList.remove(currentClass);
+    selector.classList.add(newClass);
+  } else {
+    selector.classList.remove(newClass);
+    selector.classList.add(currentClass);
   }
 }
