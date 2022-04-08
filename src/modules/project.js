@@ -9,6 +9,7 @@ const Project = (id, title, tasks) => {
 
 // Function to prefill selected project on dropdown
 // Input: Page Name String
+// Output: String
 export function getProjectName(pageName) {
     let prefill = 'Select Project';
     projects.forEach((project) => {
@@ -31,7 +32,17 @@ export function addNewProject() {
     projectStorage.saveProjects();
 }
 
+export function assignProject(task) {
+    projects.forEach(project => {
+        if(task.project === project.title) {
+            project.tasks.push(task);
+            projectStorage.saveProjects();
+        }
+    });
+}
+
 // Function to create project dropdown list
+// Output: HTML element
 export function createProjectDropdown() {
     const projectList = createElement('div', {class: 'project-list'});
     projects.forEach((project, id) => {

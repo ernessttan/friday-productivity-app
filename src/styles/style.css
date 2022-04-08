@@ -203,6 +203,13 @@ nav.open {
     width: 95%;
 }
 
+.project-entry {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 3px 0 3px 0;
+}
+
 /*--------------------------------------------------------------
 # Page
 --------------------------------------------------------------*/
@@ -239,8 +246,7 @@ nav.open {
 .project-list {
     display: none;
     background-color: var(--secondary-orange);
-    padding: 10px 50px 10px 10px;
-    width: inherit;
+    padding: 10px 20px 10px 10px;
     border-radius: 8px;
     box-shadow: 1px 1px 8px 1px 
 }

@@ -1,7 +1,7 @@
 import { querySelector, querySelectorAll, createElement, toggleClasses } from "../domUtils"
 import { getProjectName, createProjectDropdown } from "./project";
-import { addNewTask, deleteTask } from "./task";
-import { tasks } from "./storage";
+import { addNewTask, completeTask } from "./task";
+import { tasks, projects } from "./storage";
 
 // Function to display pages
 // Input: Page Name String
@@ -12,7 +12,7 @@ export function displayPage(pageName) {
 
     const page = createElement('div');
     page.innerHTML = `
-    <h2>${pageName}</h2>
+    <h2 id="pageName">${pageName}</h2>
     <form id="addTaskForm">
         <div class="form-header">
             <input type="text" class="title-input" id="taskTitle" placeholder="Untitled" required>
@@ -20,9 +20,8 @@ export function displayPage(pageName) {
         </div>
         <div class="form-body">
             <input type="date" id="taskDate" required>
-            <div id="project-select">
+            <div id="projectSelect">
                 <div class="selected">${getProjectName(pageName)}</div>
-                <div class="project-list"></div>
             </div>
         </div>
         <div class="form-footer">
@@ -34,12 +33,15 @@ export function displayPage(pageName) {
         <i class="fa-solid fa-plus"></i>
         Add Task
     </button>`;
-    rightScreen.append(page);
 
+    const taskList = createElement('ul', {id: 'taskList'});
+    page.append(taskList);
+    rightScreen.append(page);
+  
     // Create dropdown and add to project list
     const projectDropdown = createProjectDropdown();
-    querySelector('.project-list').append(projectDropdown);
-
+    querySelector('#projectSelect').append(projectDropdown);
+   
     // Page Event Listeners
     pageEventListeners(pageName);
 }
@@ -47,8 +49,7 @@ export function displayPage(pageName) {
 // Function to display page tasks
 // Input: Array of Task Objects
 export function displayPageTasks(taskArr, pageName) {
-    const taskList = createElement('ul', {id: 'taskList'});
-    rightScreen.append(taskList);
+    const taskList = querySelector('#taskList');
     taskList.innerHTML = '';
     taskArr.forEach((task) => {
         const taskCard = createElement('li', {class: 'task-card', id: task.id});
@@ -62,7 +63,7 @@ export function displayPageTasks(taskArr, pageName) {
         <div class="task-content hidden">
             <p class="task-description">${task.description}</p>
             <div class="task-footer">
-                <button class="project-tag">${getProjectName(pageName)}</button>
+                <button class="project-tag">${task.project}</button>
                 <div class="footer-right">
                     <button class="check-btn" id=${task.id}><i class="fa-solid fa-check"></i></button>
                     <button class="edit-btn" id=${task.id}><i class="fa-regular fa-pen-to-square"></i></button>
@@ -72,6 +73,18 @@ export function displayPageTasks(taskArr, pageName) {
         taskList.append(taskCard);
     });
     taskCardEventListeners();
+}
+
+// Function to display projects
+export function displayProjects() {
+    const projectList = querySelector('#projectList');
+    projectList.innerHTML = '';
+    projects.forEach((project) => {
+        const projectEntry = createElement('li', {class: 'project-entry', id: project.id});
+        projectEntry.innerHTML = `<i class="fa-solid fa-folder"></i>${project.title}`
+        projectList.append(projectEntry);
+        pageEventListeners.projectItemListener;
+    });
 }
 
 // Function for page event listeners
@@ -85,6 +98,7 @@ const pageEventListeners = (pageName) => {
         });
     };
 
+     // Listener to close add task form
     const closeTaskFormListener = () => {
         const closeTaskForm = querySelector('#closeTaskForm');
         closeTaskForm.addEventListener('click', () => {
@@ -92,14 +106,33 @@ const pageEventListeners = (pageName) => {
         });
     }
 
+     // Listener for toggling project dropdown list
     const projectDropdownListener = () => {
-        const projectSelect = querySelector('#project-select')
+        const projectSelect = querySelector('#projectSelect')
         const projectList = querySelector('.project-list', parent = projectSelect);
         projectSelect.addEventListener('click', () => {
             projectList.classList.toggle('active'); 
         });
     };
 
+    const projectItemListener = () => {
+        const projectItems = querySelectorAll('.project-item');
+        const projectSelect = querySelector('#projectSelect')
+        projectItems.forEach((projectItem) => {
+            projectItem.addEventListener('click', (e) => {
+                const selected = querySelector('.selected', parent = projectSelect);
+                let title = e.target.textContent;
+                console.log(title);
+                let id = e.target.id;
+                selected.textContent = title;
+                selected.id = id;
+                selected.style.color = 'black';
+            });
+        });
+    }
+  
+
+    // Listener for submitting task
     const submitTaskListener = () => {
         const submitTask = querySelector('#submitTask');
         submitTask.addEventListener('click', () => {
@@ -107,21 +140,23 @@ const pageEventListeners = (pageName) => {
             displayPageTasks(tasks, pageName);
         });
     }
-
     openTaskFormListener();
     closeTaskFormListener();
     projectDropdownListener();
+    projectItemListener();
     submitTaskListener();
-
     return {
         openTaskFormListener,
         closeTaskFormListener,
         projectDropdownListener,
+        projectItemListener,
         submitTaskListener
     }
 };
 
+// Event listeners for task cards
 const taskCardEventListeners = () => {
+    // Listener to expand card
     const expandCardListener = () => {
         const taskCards = querySelectorAll('.task-card');
         taskCards.forEach((taskCard) => {
@@ -132,13 +167,14 @@ const taskCardEventListeners = () => {
         })
     };
 
+    // Listener to complete task
     const completeTaskListener = () => {
         const checkButtons = querySelectorAll('.check-btn');
         checkButtons.forEach((checkButton) => {
             checkButton.addEventListener('click', (e) => {
                 let id = e.currentTarget.id;
-                deleteTask(id);
-                location.reload();
+                let pageName = querySelector('#pageName');
+                completeTask(id, pageName);
             });
         })
     }
