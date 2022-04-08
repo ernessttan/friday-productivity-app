@@ -17,22 +17,22 @@
     </header>
     <main>
         <nav class="left">
-            <ul id="nav-links">
+            <ul id="navLinks">
                 <li class="nav-link" id="today"><i class="fa-solid fa-calendar"></i>Today</li>
             </ul>
             <div id="nav-projects">
                 <h2>Projects</h2>
-                <button type="button" class="add-btn" id="open-project-add">
+                <button type="button" class="add-btn" id="openProjectForm">
                     <i class="fa-solid fa-plus"></i>
                     <p>Add Project</p>
                 </button>
-                <form class='hidden' id="add-project">
-                    <input type="text" id="project-title" placeholder="Enter Project Title">
+                <form class='hidden' id="projectForm">
+                    <input type="text" class="title-input" id="projectTitle" placeholder="Enter Project Title">
                     <div class="submit-wrapper">
-                        <button id="submit-project" class="submit-btn">Add Project</button>
+                        <button id="submitProject" class="submit-btn">Add Project</button>
                     </div>
                 </form>
-                <ul id="projects-list"></ul>
+                <ul id="projectList"></ul>
             </div>
         </nav>
         <div class="right">
