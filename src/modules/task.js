@@ -1,87 +1,39 @@
-import { taskStorage, tasks, projects, projectStorage } from "./storage";
-import {format} from 'date-fns';
-import { querySelector } from "../domUtils";
-import { displayPageTasks, displayEditForm } from "./view";
-import { assignProject } from "./project";
 const generateUniqueId = require('generate-unique-id');
+import { querySelector } from '../domUtils';
+import { taskStorage, tasks, projects } from './storage';
+import { displayPageTasks } from './view';
 
-// Task factory function
-const Task = (id, title, description, dueDate, project) => {
-    return {id, title, description, dueDate, project}
+// Task Factory Function
+const Task = (id, title, description, project, dueDate) => {
+    return {id, title, description, project, dueDate}
 }
 
 // Function to add new task
 export function addNewTask() {
-    const id = generateUniqueId({
-        length: 2,
-        useLetters: false
-    });
-    const title = querySelector('#title-input').value;
-    const description = querySelector('#description-input').value;
-    const dueDate = querySelector('#date-input').value;
-    let project = querySelector('.selected').textContent;
+    const id = generateUniqueId({length: 2});
+    const title = querySelector('#taskTitle').value;
+    const description = querySelector('#taskDescription').value;
+    const dueDate = querySelector('#taskDate').value;
+    const project = querySelector('.selected', parent = querySelector('#project-select'));
 
-    if(project === 'Select Project') {
-        project = 'No Project Selected'     
-    }
-
-    let newTask = Task(id, title, description, dueDate, project);
-    if(project) {
-        assignProject(newTask);
-        projectStorage.saveProjects();
-        tasks.push(newTask);
-        taskStorage.saveTasks();
-    } else {
-        tasks.push(newTask);
-        taskStorage.saveTasks();
-    }
+    let newTask = Task(id, title, description, project, dueDate);
+    tasks.push(newTask);
+    taskStorage.saveTasks();
 }
 
 // Function to delete task
+// Input: Integer id
 export function deleteTask(id) {
     let index = tasks.find(t => t.id === id);
     tasks.splice(index, 1);
     taskStorage.saveTasks();
+    displayPageTasks(tasks)
     
     projects.forEach((project) => {
         let index = project.tasks.find(t => t.id === id);
         project.tasks.splice(index, 1);
         projectStorage.saveProjects();
     });
-}
-
-
-// Function to edit task
-export function editTask(id) {
-    let taskToEdit = tasks.find(t => t.id === id);
-    
-    taskToEdit.title = document.querySelector('#title-edit').value;
-    taskToEdit.description = document.querySelector('#description-edit').value;
-    taskToEdit.dueDate = document.querySelector('#date-edit').value;
-    taskToEdit.project = document.querySelector('#selected-edit').textContent;
-    console.log(taskToEdit);
-    taskStorage.saveTasks();
-}
-
-// Function to filter today's tasks
-export function filterTasksToday() {
-    const dateToday = format(new Date(), 'yyyy-MM-dd');
-    let result = [];
-    tasks.forEach((task) => {
-        if(task.dueDate === dateToday) {
-            result.push(task);
-        }
-    });
-    return result;
-}
-
-// Function to filter project tasks
-export function filterProjectTasks(projectArr, projectTitle) {
-    projectArr.forEach((project) => {
-        if(project.title === projectTitle) {
-            displayPageTasks(project.tasks);
-        }
-    })
 }
 
 
