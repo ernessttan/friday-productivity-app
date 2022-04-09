@@ -1,6 +1,6 @@
 import { querySelector, querySelectorAll, createElement, toggleClasses } from "../domUtils"
 import { getProjectName, createProjectDropdown } from "./project";
-import { addNewTask, completeTask } from "./task";
+import { addNewTask, completeTask, filterProjectTasks } from "./task";
 import { tasks, projects } from "./storage";
 
 // Function to display pages
@@ -48,7 +48,7 @@ export function displayPage(pageName) {
 
 // Function to display page tasks
 // Input: Array of Task Objects
-export function displayPageTasks(taskArr, pageName) {
+export function displayPageTasks(taskArr) {
     const taskList = querySelector('#taskList');
     taskList.innerHTML = '';
     taskArr.forEach((task) => {
@@ -122,7 +122,6 @@ const pageEventListeners = (pageName) => {
             projectItem.addEventListener('click', (e) => {
                 const selected = querySelector('.selected', parent = projectSelect);
                 let title = e.target.textContent;
-                console.log(title);
                 let id = e.target.id;
                 selected.textContent = title;
                 selected.id = id;
@@ -136,8 +135,10 @@ const pageEventListeners = (pageName) => {
     const submitTaskListener = () => {
         const submitTask = querySelector('#submitTask');
         submitTask.addEventListener('click', () => {
+            addTaskForm.classList.toggle('active');
             addNewTask();
-            displayPageTasks(tasks, pageName);
+            let taskArr = filterProjectTasks(pageName)
+            displayPageTasks(taskArr);
         });
     }
     openTaskFormListener();
@@ -173,8 +174,10 @@ const taskCardEventListeners = () => {
         checkButtons.forEach((checkButton) => {
             checkButton.addEventListener('click', (e) => {
                 let id = e.currentTarget.id;
+                completeTask(id);
                 let pageName = querySelector('#pageName');
-                completeTask(id, pageName);
+                let taskArr = filterProjectTasks(pageName);
+                displayPageTasks(taskArr);
             });
         })
     }

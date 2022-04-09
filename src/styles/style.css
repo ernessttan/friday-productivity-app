@@ -286,6 +286,13 @@ nav.open {
     margin-top: 10px;
 }
 
+.due-date {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--blue);
+}
+
 .project-tag {
     border: 1px solid var(--primary-orange);
     color: var(--primary-orange);

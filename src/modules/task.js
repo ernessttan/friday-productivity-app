@@ -35,25 +35,22 @@ export function addNewTask() {
 
 // Function to complete task
 // Input: Integer id
-export function completeTask(id, pageName) {
-    let task = tasks.find((task, index) => {
+export function completeTask(id) {
+    tasks.find((task, index) => {
         if(task.id === id) {
-            return {task, index}
+            tasks.splice(index, 1);
+            taskStorage.saveTasks();
         }
+        if(task.project) {
+            projects.forEach((project) => {
+                let task = project.tasks.find(task => task.id === id);
+                if(task) {
+                    project.tasks.splice(index, 1);
+                    projectStorage.saveProjects();
+                }
+            });
+        }  
     });
-    tasks.splice(task.index, 1);
-    taskStorage.saveTasks();
-    displayPageTasks(tasks, pageName);
-
-    if(task.project != '') {
-        projects.forEach((project) => {
-            let index = project.tasks.find(t => t.id === id);
-            if(index) {
-                project.tasks.splice(index, 1);
-                projectStorage.saveProjects();
-            }
-        });
-    }    
 }
 
 export function filterProjectTasks(pageName) {
@@ -79,7 +76,7 @@ export function filterTasks(pageName) {
     return result;
 }
 
-function filterTasksToday() {
+export function filterTasksToday() {
     const dateToday = format(new Date(), 'yyyy-MM-dd');
     let result = [];
     tasks.forEach((task) => {

@@ -1,7 +1,7 @@
 import { querySelector, querySelectorAll, toggleClasses } from "../domUtils";
 import { addNewProject } from "./project";
 import { displayPage, displayPageTasks, displayProjects } from "./view";
-import { filterProjectTasks, filterTasks } from "./task";
+import { filterProjectTasks, filterTasksToday } from "./task";
 import { tasks } from "./storage";
 
 export const navListeners = () => {
@@ -37,9 +37,12 @@ export const navListeners = () => {
         const submitProject = querySelector('#submitProject');
         submitProject.addEventListener('click', (e) => {
             e.preventDefault();
+            let pageName = querySelector('#pageName').textContent;
             toggleClasses(projectForm, 'active', 'hidden');
             addNewProject();
+            displayPage(pageName);
             displayProjects();
+            openProjectListener();
         });
     }
 
@@ -51,7 +54,7 @@ export const navListeners = () => {
                 let pageName = projectEntry.textContent;
                 displayPage(pageName);
                 let taskArr = filterProjectTasks(pageName);
-                displayPageTasks(taskArr, pageName);
+                displayPageTasks(taskArr);
             });
         });
     }
@@ -61,10 +64,10 @@ export const navListeners = () => {
         const navLinks = querySelectorAll('.nav-link');
         navLinks.forEach((navLink) => {
             navLink.addEventListener('click', () => {
-                let title = navLink.textContent;
-                displayPage(title);
-                let taskArr = filterTasks(title);
-                displayPageTasks(taskArr, title);
+                let pageName = navLink.textContent;
+                displayPage(pageName);
+                let taskArr = filterTasksToday();
+                displayPageTasks(taskArr);
             });
         });
     }
