@@ -59,7 +59,8 @@ export function editTask(id) {
     task.title = querySelector('#titleEdit').value;
     task.description = querySelector('#descriptionEdit').value;
     task.dueDate = querySelector('#dateEdit').value;
-    task.project = querySelector('.selected').textContent;
+    const projectEdit = querySelector('.project-edit');
+    task.project = querySelector('.selected', parent = projectEdit).textContent;
     taskStorage.saveTasks();
 }
 
