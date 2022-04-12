@@ -147,7 +147,7 @@ const pageEventListeners = (pageName) => {
 
     const projectItemListener = () => {
         const projectItems = querySelectorAll('.project-item');
-        const projectSelect = querySelector('#projectSelect')
+        const projectSelect = querySelector('.project-select')
         projectItems.forEach((projectItem) => {
             projectItem.addEventListener('click', (e) => {
                 const selected = querySelector('.selected', parent = projectSelect);
