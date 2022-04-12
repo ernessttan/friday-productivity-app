@@ -53,6 +53,17 @@ export function completeTask(id) {
     });
 }
 
+// Function to edit task
+export function editTask(id) {
+    let task = tasks.find(task => task.id === id);
+    task.title = querySelector('#titleEdit').value;
+    task.description = querySelector('#descriptionEdit').value;
+    task.dueDate = querySelector('#dateEdit').value;
+    const projectEdit = querySelector('.project-edit');
+    task.project = querySelector('.selected', parent = projectEdit).textContent;
+    taskStorage.saveTasks();
+}
+
 export function filterProjectTasks(pageName) {
     let result = [];
     projects.forEach((project) => {

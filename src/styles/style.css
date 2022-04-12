@@ -115,7 +115,6 @@ input[type="date"] {
     background-color: white;
     border-radius: 8px;
     color: black;
-    padding: 10px 20px 10px 8px;
     width: 95%;
     font-weight: 700;
 }
@@ -222,7 +221,14 @@ nav.open {
     color: var(--text-grey);
 }
 
-#addTaskForm.active {
+#editTaskForm {
+    border: 2px var(--text-grey) solid;
+    border-radius: 8px;
+    padding: 20px 10px 20px 10px;
+    color: var(--text-grey);
+}
+
+#addTaskForm.show {
     display: block;
 }
 
