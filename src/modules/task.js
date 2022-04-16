@@ -16,7 +16,7 @@ export function addNewTask() {
     const title = querySelector('#taskTitle').value;
     const description = querySelector('#taskDescription').value;
     const dueDate = querySelector('#taskDate').value;
-    let project = querySelector('.selected', parent = querySelector('#projectSelect')).textContent;
+    let project = querySelector('.selected', parent = querySelector('.project-select')).textContent;
     if(project === 'Select Project') {
         project = 'No Project Selected';
     }
@@ -65,6 +65,9 @@ export function editTask(id) {
 }
 
 export function filterProjectTasks(pageName) {
+    if(pageName === 'All Tasks') {
+        return tasks
+    }
     let result = [];
     projects.forEach((project) => {
         let projectTasks = project.tasks;
@@ -97,6 +100,7 @@ export function filterTasksToday() {
     });
     return result;
 }
+
 
 
 

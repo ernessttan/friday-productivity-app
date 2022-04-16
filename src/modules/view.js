@@ -163,8 +163,9 @@ const pageEventListeners = (pageName) => {
     // Listener for submitting task
     const submitTaskListener = () => {
         const submitTask = querySelector('#submitTask');
-        submitTask.addEventListener('click', () => {
-            addTaskForm.classList.toggle('active');
+        submitTask.addEventListener('click', (e) => {
+            e.preventDefault();
+            addTaskForm.classList.toggle('hidden');
             addNewTask();
             let taskArr = filterProjectTasks(pageName)
             displayPageTasks(taskArr);
