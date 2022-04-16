@@ -19,6 +19,7 @@ Friday is an app that helps you with planning your tasks, so you can get to Frid
 
 
 ### Learning Outcomes
-- Practiced using webpack more
+- Practiced using webpack more and gained a better understanding of how to use it
 - Used module and factory patterns for code organizing
-- 
+- Learned to utilize different 3rd party JS libraries
+- Overall improvement on code organization and grasp of Javascript
